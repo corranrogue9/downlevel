@@ -1,0 +1,97 @@
+git checkout seed
+git checkout -b demo/1.0
+notepad A.cs
+A.One
+		System.Console.WriteLine("introducing non-breaking change");
+git add *
+git commit -m "added a nonbreaking change to A.One()"
+notepad B.cs
+B.Five
+		System.Console.WriteLine("a non-brekaing change");
+git add *
+git commit -m "added a nonbreaking change to B.Five()"
+git checkout -b demo/1.1
+notepad D.cs
+namespace Downlevel
+{
+    public class D
+    {
+        public void Nine()
+        {
+        }
+    }
+}
+git add *
+git commit -m "added a D class, nonbreaking api change"
+notepad D.cs
+D.Nine
+		System.Console.WriteLine("another nonbreaking change");
+git add *
+git commit -m "added a nonbreaking change to D.Nine()"
+git checkout demo/1.0
+notepad A.cs
+A.Three
+		System.Console.WriteLine("another a nonbrekaing change");
+git add *
+git commit -m "added a nonbreaking change to A.Three()"
+git checkout demo/1.1
+git cherry-pick demo/1.0
+git checkout demo/1.1		// WARNING: expected to break
+git checkout -b demo/2.0
+del C.cs
+git add *
+git commit -m "removed C"
+git checkout demo/1.1
+notepad C.cs
+C.Eight
+		System.Console.WriteLine("nonbreaking change in c");
+git add *
+git commit -m "added nonbreaking change to C.Eight()"
+git checkout demo/1.0
+git cherry-pick demo/1.1
+git checkout demo/2.0
+notepad B.cs
+B.Six
+		System.Console.WriteLine("second nonbrekaing change");
+git add *
+git commit -m "added nonbreaking change to B.Six()"
+git checkout demo/1.0
+git cherry-pick demo/2.0
+git checkout demo/1.1
+git cherry-pick demo/2.0
+git checkout demo/1.1		// WARNING: expected to break
+git checkout -b demo/1.2
+notepad B.cs
+
+        public void Ten()
+        {
+        }
+git add *
+git commit -m "added a nonbreaking api change to B"
+git checkout demo/2.0
+git checkout -b demo/2.1
+git cherry-pick demo/1.2
+git checkout demo/1.0
+notepad A.cs
+	public void One()
+        {
+            System.Console.WriteLine("introducing non-breaking change");
+            // really making fixes to One
+            var builder = new System.Text.StringBuilder();
+            for (int i = 0; i < 100; ++i)
+            {
+                builder.Append(i);
+            }
+
+            System.IO.File.WriteAllText(null, builder.ToString());
+        }
+git add *
+git commit -m "made a nonbreaking change to A.One()"
+git checkout demo/1.1
+git cherry-pick demo/1.0
+git checkout demo/1.2
+git cherry-pick demo/1.0
+git checkout demo/2.0
+git cherry-pick demo/1.0
+git checkout demo/2.1
+git cherry-pick demo/1.0
