@@ -15,5 +15,9 @@ namespace Downlevel
         {
             System.Console.WriteLine("second nonbrekaing change");
         }
+
+        public void Ten()
+        {
+        }
     }
 }
