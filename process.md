@@ -28,6 +28,13 @@
 4. for each other major/minor version combination, apply the change to that version branch if the branch can take the change
 
 
+### NOTE
+1. we use branches and not tags; these release branches are under active development, so it makes sense to track them as branches. if we want to add a tag to the specific revision version commits when we do the release process for tracking, that is fine, but unrelated
+2. we do not have to release every version branch that gets generated
+3. just because we have been able to take a change in an older version branch due to convenience does not mean that we are committing to actively maintaining that version
+4. if releases are automated, there is low overhead for following this process, and it gives customers fixes more often
+5. we can release breaking changes more often because we will be able to easily take fixes from lower versions into higher versions (and vice versa) without the additional maintenance cost
+
 ```c#
 void ApplyNonbreakingApiChange(int major, int minor)
 {
