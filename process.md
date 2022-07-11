@@ -26,3 +26,40 @@
 2. git checkout {major}.{minor}
 3. develop change
 4. for each other major/minor version combination, apply the change to that version branch if the branch can take the change
+
+
+```c#
+void ApplyNonbreakingApiChange(int major, int minor)
+{
+  for (int i = major + 1; true; ++i)
+  {
+    git checkout {i}.0
+    if (%errorlevel% != 0)
+    {
+      // this major version doesn't exist, we are done
+      break;
+    }
+  
+    int j;
+    for (j = 1; true; ++j)
+    {
+      git checkout {i}.{j}
+      if (%errorlevel% != 0)
+      {
+        // we found the highest minor version within this major version
+        break;
+      }
+    }
+    
+    git checkout -b {i}.{j+1}
+    git cherry-pick {major}.{minor + 1}
+    if (%errorlevel != 0)
+    {
+      git cherry-pick --abort
+      
+      // this major version cannot take the new API, higher major versions won't be able to either
+      break;
+    }
+  }
+}
+```
