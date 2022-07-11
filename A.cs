@@ -4,7 +4,14 @@ namespace Downlevel
     {
         public void One()
         {
-            System.Console.WriteLine("introducing non-breaking change");
+            // really making fixes to One
+            var builder = new System.Text.StringBuilder();
+            for (int i = 0; i < 100; ++i)
+            {
+                builder.Append(i);
+            }
+
+            System.IO.File.WriteAllText(null, builder.ToString());
         }
 
         public void Two()
